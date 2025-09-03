@@ -1,0 +1,9 @@
+scikit-learn
+joblib
+numpy
+pandas
+python-dotenv
+matplotlib
+seaborn
+jupyterlab
+ipykernel
