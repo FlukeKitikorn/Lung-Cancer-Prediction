@@ -1,27 +1,52 @@
 import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-      <button type="button" class="btn btn-primary">Check bootstrap</button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+const totalQuestions = 20;
+const container = document.getElementById("questions");
 
-setupCounter(document.querySelector('#counter'))
+// ***1.1*** สร้างคำถาม 20 ข้อ 
+for (let index = 1; index <= totalQuestions; index++) {
+  container.innerHTML += `
+    <div style="margin-bottom:10px;">
+      <label>ข้อ ${index}:</label>
+      <label><input type="radio" name="q${index}" value="0" required /> 0</label>
+      <label><input type="radio" name="q${index}" value="1" /> 1</label>
+    </div>
+  `;
+}
+
+//  ดัก submit form
+document.getElementById("answerForm").addEventListener("submit", async (page) => {
+  page.preventDefault(); //เมื่อกดส่งจะไม่รีโหลดหน้าเว็บใหม่
+
+  // เก็บคำตอบ
+  const answer = {};
+  for (let index = 1; index <= totalQuestions; index++) {
+    const selected = document.querySelector(`input[name="q${index}"]:checked`);
+    answer[`q${index}`] = selected ? selected.value : null;
+  }
+
+  try {
+    const res = await fetch("http://127.0.0.1:8000/api/answers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ answer }),
+    });
+
+    if (!res.ok) throw new Error("API Error");
+
+    const data = await res.json();
+    console.log("✅ ส่งสำเร็จ:", data);
+    alert("ส่งคำตอบเรียบร้อย!");
+
+    // ***1.2*** ค่าที่ส่งไปจะไปแสดงผลตาม id
+    const display = document.getElementById("display");
+    display.innerHTML = `<pre>${JSON.stringify(data.received, null, 2)}</pre>`;
+  } catch (err) {
+    console.error("❌ Error:", err);
+    alert("ส่งข้อมูลล้มเหลว!");
+  }
+});
