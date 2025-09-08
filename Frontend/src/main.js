@@ -2,16 +2,31 @@ import './style.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-const totalQuestions = 20;
+const totalQuestions = 12;
+const topic = [
+  "YELLOW_FINGERS",
+  "ANXIETY",
+  "PEER_PRESSURE",
+  "CHRONIC",
+  "DISEASE",
+  "FATIGUE",
+  "ALLERGY",
+  "WHEEZING",
+  "ALCOHOL_CONSUMING",
+  "COUGHING",
+  "SWALLOWING_DIFFICULTY",
+  "CHEST_PAIN",
+  "ANXYELFIN"
+];
 const container = document.getElementById("questions");
 
-// ***1.1*** สร้างคำถาม 20 ข้อ 
+// ***1.1*** สร้างคำถาม 12 ข้อ 
 for (let index = 1; index <= totalQuestions; index++) {
   container.innerHTML += `
-    <div style="margin-bottom:10px;">
-      <label>ข้อ ${index}:</label>
-      <label><input type="radio" name="q${index}" value="0" required /> 0</label>
-      <label><input type="radio" name="q${index}" value="1" /> 1</label>
+    <div style="margin-left: min(3em , 10%);">
+      <label>${index}. ${topic[index-1]}:</label> <br>
+      <label><input type="radio" name="${topic[index-1]}" value="0" required /> 0</label> <br>
+      <label><input type="radio" name="${topic[index-1]}" value="1" /> 1</label>
     </div>
   `;
 }
@@ -23,8 +38,8 @@ document.getElementById("answerForm").addEventListener("submit", async (page) =>
   // เก็บคำตอบ
   const answer = {};
   for (let index = 1; index <= totalQuestions; index++) {
-    const selected = document.querySelector(`input[name="q${index}"]:checked`);
-    answer[`q${index}`] = selected ? selected.value : null;
+    const selected = document.querySelector(`input[name="${topic[index-1]}"]:checked`);
+    answer[`${topic[index-1]}`] = selected ? selected.value : null;
   }
 
   try {
@@ -39,14 +54,14 @@ document.getElementById("answerForm").addEventListener("submit", async (page) =>
     if (!res.ok) throw new Error("API Error");
 
     const data = await res.json();
-    console.log("✅ ส่งสำเร็จ:", data);
+    console.log("ส่งสำเร็จ:", data);
     alert("ส่งคำตอบเรียบร้อย!");
 
     // ***1.2*** ค่าที่ส่งไปจะไปแสดงผลตาม id
     const display = document.getElementById("display");
     display.innerHTML = `<pre>${JSON.stringify(data.received, null, 2)}</pre>`;
   } catch (err) {
-    console.error("❌ Error:", err);
+    console.error("Error:", err);
     alert("ส่งข้อมูลล้มเหลว!");
   }
 });
