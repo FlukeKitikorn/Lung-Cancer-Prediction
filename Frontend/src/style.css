@@ -1,0 +1,138 @@
+@font-face {
+    font-family: Kanit;
+    src: url(../fonts/Kanit-Regular.ttf);
+}
+
+* {
+    font-family: "Kanit";
+}
+
+.title {
+    text-align: center;
+    color: #fff;
+    margin: 100px 50px auto 50px;
+}
+
+/* index.html */
+.background {
+    background-color: #393d52;
+}
+
+.title h1{
+    font-size: 50px;
+}
+
+.title p{
+    font-size: 20px;
+}
+
+.btn a{
+    color: #fff;
+    text-decoration: none;
+}
+
+/* index1.html */
+.app {
+    background: #fff;
+    width: 90%;
+    max-width: 800px;
+    margin: 50px auto 0;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.question {
+    text-align: center;
+    color: #222;
+    font-weight: 300;
+}
+
+.question h3 {
+  font-size: 25px;
+  margin: 10px 0;
+}
+
+.question h2 {
+  font-size: 35px;
+  margin: 5px 0;
+}
+
+.question h5 {
+  font-size: 20px;
+  margin: 5px 0 15px;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.nav-buttons #nextBtn {
+    width: 80px;
+    border-radius: 15px;
+}
+.nav-buttons #submitBtn {
+    width: 80px;
+    border-radius: 15px;
+}
+.nav-buttons #backBtn {
+    width: 80px;
+    border-radius: 15px;
+}
+
+.choicebtn {
+    background: #fff;
+    color: #222;
+    font-weight: 500;
+    width: 100%;
+    border: 1px solid #222;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: left;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.choicebtn.active {
+    background-color: rgb(166, 182, 211);
+}
+
+/* index2.html */
+.content_section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0;
+}
+
+.progress_circle {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: conic-gradient(rgb(0, 86, 88) 3deg,rgb(177, 177, 177) 0deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress_circle::before {
+    content: "";
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    background: #393d52;
+}
+
+.progress_value {
+    position: relative;
+    font-size: 40px;
+    font-weight: 600;
+    color: white;
+}
+
+.homebtn {
+    margin-top: 20px;
+    text-align: center;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/Frontend/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/Frontend/src/style.css">
+  <title>แบบสอบถาม 12 ข้อ</title>
+</head>
+
+<body class="background">
+  <div class="title">
+    <h1>แบบประเมินความเสี่ยงเป็นโรคมะเร็งปอด</h1>
+    <h3>โปรดเลือกอาการของคุณ</h3>
+  </div>
+  <div class="app">
+    <form id="answerForm">
+      <div class="question" id="questions"></div> <!--ส่วนนี้จะทำการแสดงข้อให้กรอก มีต่อที่ 1.1(file : main.js)--> <br>
+      <div class="nav-buttons">
+        <button type="button" id="backBtn" class="btn btn-secondary">Back</button>
+        <button type="button" id="nextBtn" class="btn btn-primary">Next</button>
+        <button type="submit" id="submitBtn" style="display:none;" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+  <div id="display"></div> <!--ส่วนนี้จะทำการแสดงข้อมูลที่กรอกไป มีต่อที่ 1.2(file : main.js)-->
+  <!-- main.js จะอยู่ใน src/main.js -->
+  <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+
+</html>

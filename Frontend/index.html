@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>แบบสอบถาม 13 ข้อ</title>
+  <link rel="stylesheet" href="/Frontend/src/style.css">
+  <link rel="stylesheet" href="/Frontend/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <title>แบบสอบถาม 12 ข้อ</title>
 </head>
-<body>
-  <h1>แบบสอบถาม</h1>
-  <form id="answerForm">
-    <div id="questions"></div> <!--ส่วนนี้จะทำการแสดงข้อให้กรอก มีต่อที่ 1.1(file : main.js)--> <br>
-    <button type="submit">ส่งคำตอบ</button>
-  </form>
-  <div id="display"></div> <!--ส่วนนี้จะทำการแสดงข้อมูลที่กรอกไป มีต่อที่ 1.2(file : main.js)-->
-  <!-- main.js จะอยู่ใน src/main.js -->
+<body class="background">
+    <div class="title">
+      <h2 class="mb-3">แบบประเมินสุขภาพ</h2>
+      <h1>ความเสี่ยงเป็นโรคมะเร็งปอด</h1>
+      <p class="mt-4">พี่โชนคะ น้ำชอบพี่โชนมาก ชอบมา 3 ปีแล้ว น้ำทำทุกอย่าง เปลี่ยนแปลงตัวเองทุกอย่างก็เพื่อพี่ น้ำไปคัดเลือกนางรำ เล่นละครเวที ไปเป็นดรัมเมเยอร์ เรียนหนังสือให้เก่งก็เพื่อพี่ แต่ตอนนี้น้ำรู้แล้วว่า สิ่งที่น้ำควรจะทำมากที่สุดและน่าจะทำมาตั้งนานแล้ว คือ บอกกับพี่โชนตรง ๆ ว่า..น้ำชอบพี่โชน</p>
+    </div>
+  <div style="text-align: center;">
+    <button class="d-inline-flex align-items-center btn btn-dark btn-lg px-4 rounded-pill" type="button">
+      <a href="./index1.html">ทำแบบประเมิน</a>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi ms-2" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+      </svg>
+    </button>
+  </div>
   <script type="module" src="/src/main.js"></script>
 </body>
+
 </html>

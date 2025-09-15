@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/Frontend/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/Frontend/src/style.css">
+  <title>แบบสอบถาม 12 ข้อ</title>
+</head>
+
+<body class="background">
+  <div class="title">
+    <h1>ผลการประเมิน</h1>
+    <h3>คุณมีโอกาสเป็นมะเร็งปอด</h3>
+  </div>
+    <!-- เปอร์เซนต์แสดงผลประเมิน (file : progress.js)-->
+    <div class="content_section">
+      <div class="progress_circle">
+        <span class="progress_value"></span>
+      </div>
+    </div>
+    <!-- card show -->
+    <div class="container my-3">
+      <div class="row justify-content-center g-3 mx-3">
+        <div class="col-md-5">
+          <div class="h-100 p-5 text-dark bg-white rounded-4">
+            <h2>การดูแลตัวเองเบื้องต้น</h2>
+            <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then,
+              mix
+              and match with additional component themes and more.</p>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="h-100 p-5 text-dark bg-white rounded-4">
+            <h2>ปรึกษาแพทย์ผ่านแอปพลิเคชัน</h2>
+            <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then,
+              mix
+              and match with additional component themes and more.</p>
+            <button class="btn btn-outline-dark" type="button">Download App</button>
+          </div>
+        </div>
+      </div>
+      <!-- ปุ่มกลับหน้าหลัก -->
+      <div class="homebtn">
+        <button class="btn btn-outline-light" type="button"><a href="./index.html">Back to home</a></button>
+      </div>
+    </div>
+  <!-- main.js จะอยู่ใน src/main.js -->
+  <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./src/progress.js"></script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+
+</html>
