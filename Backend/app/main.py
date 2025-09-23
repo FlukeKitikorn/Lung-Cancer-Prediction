@@ -4,6 +4,8 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from typing import Dict, Optional
 from pymongo import MongoClient
+import joblib
+import numpy as np
 
 app = FastAPI()
 
@@ -22,31 +24,67 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# เก็บคำตอบล่าสุด
-latest_answer: Dict[str, Optional[int]] = {} # สามารถลบได้ไม่ส่งผลอะไร ถ้าลบก็ไปลบ 2.1 ด้วย แล้วก็ไปเปิดคอมเม้น 2.1.2 แล้วปิด 2.1.1
+# โหลดโมเดลที่ train ไว้
+xgb_model = joblib.load("../ML/notebooks/model.pkl")
 
-# Pydantic model สำหรับ validate แปลอีกที เป็นการสร้าง format ข้อมูลให้ตรง
+# เก็บคำตอบล่าสุด
+latest_answer: Dict[str, Optional[int]] = {}
+
+
+# Pydantic model
 class AnswerRequest(BaseModel):
     answer: Dict[str, Optional[int]]
 
-# ✅ Endpoint สำหรับรับข้อมูล
-@app.post("/api/answers") # endpoint ที่ส่งเข้ามา
+
+# ✅ Endpoint สำหรับรับข้อมูล + ทำนายด้วยโมเดล
+@app.post("/api/answers")
 async def save_answer(req: AnswerRequest):
-    # *** 2.1.1 ***
     global latest_answer
     latest_answer = req.answer
-    result = collection.insert_one(req.model_dump())
-    print("Saved to DB with id: ", result.inserted_id)
-    print("Received on server:", latest_answer)
-    return {"status": "ok", "inserted_id": str(result.inserted_id),"received": latest_answer}
-    # *** 2.1.2 ***
-    # result = collection.insert_one(req.dict())
-    # print("Saved to DB with id: ", result.inserted_id)
-    # print("Received on server:", req.answer)
-    # return {"status": "ok", "inserted_id": str(result.inserted_id),"received": req.answer}
+
+    # --- เตรียม input ให้โมเดล ---
+    # ต้องเรียง features ให้ตรงกับตอน train
+    feature_order = [
+        "YELLOW_FINGERS",
+        "ANXIETY",
+        "PEER_PRESSURE",
+        "CHRONIC_DISEASE",
+        "FATIGUE",
+        "ALLERGY",
+        "WHEEZING",
+        "ALCOHOL_CONSUMING",
+        "COUGHING",
+        "SWALLOWING_DIFFICULTY",
+        "CHEST_PAIN",
+        "ANXYELFIN",
+    ]  # <- แก้ตามที่คุณ train จริง
+    feature_vector = [latest_answer.get(f, 0) for f in feature_order]
+
+    data = np.array([feature_vector])
+
+    # --- ทำนายด้วยโมเดล ---
+    prediction = xgb_model.predict(data)[0]
+    probability = xgb_model.predict_proba(data)[0].tolist()
+
+    # --- เก็บลง DB ---
+    doc = req.model_dump()
+    doc["prediction"] = int(prediction)
+    doc["probability"] = probability
+    result = collection.insert_one(doc)
+
+    print("Saved to DB with id:", result.inserted_id)
+    print("Received:", latest_answer, "Predicted:", prediction)
+
+    return {
+        "status": "ok",
+        "inserted_id": str(result.inserted_id),
+        "received": latest_answer,
+        "prediction": int(prediction),
+        "probability": probability,
+    }
 
 
-# *** 2.1 *** Endpoint สำหรับแสดงคำตอบล่าสุดบนเว็บ FastAPI
+# *** Endpoint สำหรับแสดงคำตอบล่าสุดบนเว็บ FastAPI
 @app.get("/", response_class=HTMLResponse)
 async def home():
     html_content = f"""
