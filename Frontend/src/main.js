@@ -63,6 +63,14 @@ function startQuestion() {
 }
 
 nextbtn.addEventListener("click", () => {
+  const currentQuestion = topic[currentQuestionIndex];
+
+  // บังคับให้เลือกคำตอบก่อนกด next
+  if (!answer.hasOwnProperty(currentQuestion)) {
+    alert("Please select an answer");
+    return; 
+  }
+
   if (currentQuestionIndex < topic.length - 1) {
     currentQuestionIndex++;
     showQuestion();
