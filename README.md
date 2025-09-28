@@ -60,4 +60,6 @@ pip install -r requirements.txt #ติดตั้ง Dependecise
 ```bash
 jupyter lab
 ```
+docker exec -it mongo_db mongosh -u root -p example
+
 

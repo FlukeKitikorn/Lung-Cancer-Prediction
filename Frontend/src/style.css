@@ -136,3 +136,13 @@
     margin-top: 20px;
     text-align: center;
 }
+
+.bullet li{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+}
+
+.bullet li a{
+    color: #000;
+}

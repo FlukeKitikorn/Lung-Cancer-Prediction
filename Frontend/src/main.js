@@ -2,6 +2,7 @@ import './style.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
+
 const topic = [
   "YELLOW_FINGERS",
   "ANXIETY",
@@ -56,12 +57,20 @@ const answer = {};
 
 let currentQuestionIndex = 0;
 
-function startQuestion(){
+function startQuestion() {
   currentQuestionIndex = 0;
   showQuestion();
 }
 
 nextbtn.addEventListener("click", () => {
+  const currentQuestion = topic[currentQuestionIndex];
+
+  // บังคับให้เลือกคำตอบก่อนกด next
+  if (!answer.hasOwnProperty(currentQuestion)) {
+    alert("Please select an answer");
+    return; 
+  }
+
   if (currentQuestionIndex < topic.length - 1) {
     currentQuestionIndex++;
     showQuestion();
@@ -75,10 +84,10 @@ backbtn.addEventListener("click", () => {
   }
 });
 
-function handleNextButton(){
+function handleNextButton() {
   //ซ่อนปุ่ม Back ข้อแรก
   if (currentQuestionIndex === 0) {
-  document.getElementById("backBtn").style.visibility = "hidden"; 
+    document.getElementById("backBtn").style.visibility = "hidden";
   } else {
     document.getElementById("backBtn").style.visibility = "visible";
   }
@@ -93,11 +102,11 @@ function handleNextButton(){
 }
 
 // ***1.1*** สร้างคำถาม 12 ข้อ 
-function showQuestion(){
+function showQuestion() {
   let question = topic[currentQuestionIndex];
   let questionTH = topicth[currentQuestionIndex];
   let questionEN = topicen[currentQuestionIndex];
-  let questionNo = currentQuestionIndex + 1; 
+  let questionNo = currentQuestionIndex + 1;
 
   container.innerHTML = `
     <div>
@@ -112,7 +121,7 @@ function showQuestion(){
 
   //เก็บค่าคำตอบ
   document.querySelectorAll(".choicebtn").forEach(btn => {
-    btn.addEventListener("click", function() {
+    btn.addEventListener("click", function () {
       const qName = this.getAttribute("data-name");
       const value = this.getAttribute("data-value");
       answer[qName] = value;
@@ -122,11 +131,11 @@ function showQuestion(){
       this.classList.add("active");
     });
 
-        //ทำให้ยังจำคำตอบข้อที่ผ่านมา
-    if(answer[question] !== null){
+    //ทำให้ยังจำคำตอบข้อที่ผ่านมา
+    if (answer[question] !== null) {
       const prevValue = answer[question];
       const prevBtn = document.querySelector(`.choicebtn[data-name="${question}"][data-value="${prevValue}"]`);
-      if(prevBtn){
+      if (prevBtn) {
         prevBtn.classList.add("active");
       }
     }
@@ -134,18 +143,14 @@ function showQuestion(){
   handleNextButton();
 }
 startQuestion();
+var prob = 0;
 
-
-
-//  ดัก submit form
 document.getElementById("answerForm").addEventListener("submit", async (page) => {
-  page.preventDefault(); //เมื่อกดส่งจะไม่รีโหลดหน้าเว็บใหม่
+  page.preventDefault();
   try {
     const res = await fetch("http://127.0.0.1:8000/api/answers", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ answer }),
     });
 
@@ -154,11 +159,17 @@ document.getElementById("answerForm").addEventListener("submit", async (page) =>
     const data = await res.json();
     console.log("ส่งสำเร็จ:", data);
     alert("ส่งคำตอบเรียบร้อย!");
+
+
+
+
+
+    // main.js
+    let prob = (data.prediction == 1)
+    {prob = data.probability[1] };
+    localStorage.setItem("prob", prob);
     window.location.href = "../index2.html"; //เปลี่ยนหน้าไป result (index2.html)
 
-    // ***1.2*** ค่าที่ส่งไปจะไปแสดงผลตาม id
-    const display = document.getElementById("display");
-    display.innerHTML = `<pre>${JSON.stringify(data.received, null, 2)}</pre>`;
   } catch (err) {
     console.error("Error:", err);
     alert("ส่งข้อมูลล้มเหลว!");
